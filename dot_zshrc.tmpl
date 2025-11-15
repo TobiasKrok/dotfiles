@@ -6,8 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 # if we're in an OrbStack VM, add an install nvim command (for arm64, its the default for orbstack)
-
-{{ if stat "/opt/orbstack-release" }}
+{{ if stat "/opt/orbstack-guest" }}
 setup-nvim() {
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz
 sudo rm -rf /opt/nvim-linux-arm64
