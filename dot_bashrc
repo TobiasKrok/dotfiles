@@ -1,0 +1,46 @@
+setup-nvim() {
+  set -euo pipefail
+
+  if [ ! -x /opt/nvim-linux-arm64/bin/nvim ]; then
+    echo "[setup-nvim] Installing Neovim to /opt/nvim-linux-arm64..."
+    tmpdir="$(mktemp -d)"
+    cd "$tmpdir"
+    curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz
+    sudo mkdir -p /opt/nvim-linux-arm64
+    sudo tar -C /opt/nvim-linux-arm64 --strip-components=1 -xzf nvim-linux-arm64.tar.gz
+    echo "[setup-nvim] Neovim installed at /opt/nvim-linux-arm64."
+  else
+    echo "[setup-nvim] Neovim already present at /opt/nvim-linux-arm64, skipping install."
+  fi
+
+  case ":$PATH:" in
+    *":/opt/nvim-linux-arm64/bin:"*) ;;
+    *) export PATH="$PATH:/opt/nvim-linux-arm64/bin" ;;
+  esac
+
+  if [ ! -d "$HOME/.config/nvim" ]; then
+    echo "[setup-nvim] Installing AstroNvim into ~/.config/nvim..."
+    mkdir -p "$HOME/.config"
+    git clone https://github.com/AstroNvim/template.git "$HOME/.config/nvim"
+    rm -rf "$HOME/.config/nvim/.git"
+    echo "[setup-nvim] AstroNvim installed."
+
+  else
+    echo "[setup-nvim] ~/.config/nvim already exists, not touching it."
+  fi
+
+  if ! command -v npm >/dev/null 2>&1
+      then
+         echo "[setup-nvim] install node (24)"
+         curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+         \. "$HOME/.nvm/nvm.sh"
+
+         nvm install 24
+  fi
+
+  echo "[setup-nvim] installing treesitter-cli"
+  npm install tree-sitter-cli
+
+  echo "[setup-nvim] Done."
+}

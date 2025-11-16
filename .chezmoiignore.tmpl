@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "darwin" -}}
+.bashrc
+{{ end }}
+
+{{ if eq .chezmoi.os "linux" -}}
+.zshrc
+.p10k.zsh
+{{ end }}
