@@ -6,8 +6,8 @@ setup-nvim() {
     tmpdir="$(mktemp -d)"
     cd "$tmpdir"
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.tar.gz
-    sudo mkdir -p /opt/nvim-linux-arm64
-    sudo tar -C /opt/nvim-linux-arm64 --strip-components=1 -xzf nvim-linux-arm64.tar.gz
+    mkdir -p /opt/nvim-linux-arm64
+    tar -C /opt/nvim-linux-arm64 --strip-components=1 -xzf nvim-linux-arm64.tar.gz
     echo "[setup-nvim] Neovim installed at /opt/nvim-linux-arm64."
   else
     echo "[setup-nvim] Neovim already present at /opt/nvim-linux-arm64, skipping install."
